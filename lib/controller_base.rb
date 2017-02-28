@@ -15,7 +15,7 @@ class ControllerBase
 
 
   end
-  protect_from_forgery
+
 
   # Setup the controller
   def initialize(req, res, route_params={})

@@ -1,4 +1,4 @@
-require 'byebug'
+# require 'byebug'
 class Static
   attr_reader :req
 
@@ -15,7 +15,7 @@ class Static
 
   def call(env)
     @req = Rack::Request.new(env)
-    @res = Rack::Response.new(env)
+    # @res = Rack::Response.new(env)
 
     if @req.path.match(/^\/public/)
       handle_static
@@ -29,7 +29,7 @@ class Static
     path = "." + req.path
     extension = path.match("^.*\.(...)")[1]
     mtype = MIME_TYPES[extension]
-    # debugger
+
     p "serving: " + path + " as: " +mtype
 
     if File.file?(path)

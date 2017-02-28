@@ -1,22 +1,30 @@
 class CatsController < ControllerBase
-$cats = [
-  { id: 1, name: "Curie" },
-  { id: 2, name: "Markov" }
-]
 
-$statuses = [
-  { id: 1, cat_id: 1, text: "Curie loves string!" },
-  { id: 2, cat_id: 2, text: "Markov is mighty!" },
-  { id: 3, cat_id: 1, text: "Curie is cool!" }
-]
   def show
-    session["count"] ||= 0
-    session["count"] += 1
-    @cat = $cats.find do |s|
-      s[:id] == Integer(params['cat_id'])
-    end
+    # session["count"] ||= 0
+    # session["count"] += 1
+    @cat = Cat.find(Integer(params['cat_id']))
     # debugger
     render :show
+  end
+
+  def index
+    @cats= Cat.all
+    render :index
+  end
+
+  def new
+    render :new
+  end
+
+  def create
+    cat = Cat.new(params['cat'])
+    if cat.save
+      redirect_to "/cats/#{cat.id}"
+    else
+      flash.now[:errors] = cat.errors
+      render :new
+    end
   end
 
 end

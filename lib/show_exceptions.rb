@@ -27,7 +27,8 @@ class ShowExceptions
     # debugger
     data = File.read('lib/templates/rescue.html.erb')
     erb = ERB.new(data).result(binding)
-    File.open('test.html', 'w'){ |file| file.write(erb)}
+    #dump html output to file for testing purposes
+    # File.open('test.html', 'w'){ |file| file.write(erb)}
     ['500', {'Content-type' => 'text/html'}, erb]
   end
 

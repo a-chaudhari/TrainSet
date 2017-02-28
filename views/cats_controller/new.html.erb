@@ -1,11 +1,16 @@
 <form action="/cats" method="POST">
   <label>Name
-    <input type="text" name="cat[name]" value="<%= @cat.name %>">
-  </label>
-
+    <input type="text" name="cat[name]" value="">
+  </label><br>
+  <div class="">  <%= flash[:errors][:name] unless flash[:errors].nil? %></div>
   <label>Owner
-    <input type="text" name="cat[owner]" value="<%= @cat.owner %>">
-  </label>
+  <select class="" name="cat[owner_id]">
+    <option value="NULL">No one</option>
+    <% Human.all.each do |human| %>
+    <option value="<%= human.id %>"><%= human.fname + " " + human.lname %></option>
+    <% end %>
+  </select>
+  </label><br>
 
-  <input type="submit">
+  <input type="submit" value="Create Kitty">
 </form>

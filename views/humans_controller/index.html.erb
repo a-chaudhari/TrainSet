@@ -1,0 +1,9 @@
+<h1>All Humans</h1>
+<ul>
+  <% @humans.each do |human| %>
+  <li><a href="/humans/<%= human.id %>"><%= human.fname + " " + human.lname%></a></li>
+  <% end %>
+</ul>
+
+<a href="/">Index</a><br>
+<a href="/humans/new">Add Human</a>

@@ -3,9 +3,15 @@ require_relative '../lib/static'
 require_relative '../lib/controller_base'
 require_relative '../lib/router'
 require_relative '../config/routes.rb'
+require_relative '../lib/TapeDeck/tape_deck'
 
 #automatically require all controller files
 Dir[File.dirname(__FILE__) + "/../controllers/*_controller.rb"].each do |file|
+  require file
+end
+
+#automatically require all model files
+Dir[File.dirname(__FILE__) + "/../models/*.rb"].each do |file|
   require file
 end
 
