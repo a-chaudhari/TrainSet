@@ -30,7 +30,6 @@ class ControllerBase
   end
 
   def form_authenticity_token
-    #we have no db, so sending fixed value
     @val ||= SecureRandom.urlsafe_base64(16)
     @res.set_cookie("authenticity_token", { :path => '/',  :value => @val} )
     # @req.set_

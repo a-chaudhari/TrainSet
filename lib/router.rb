@@ -10,10 +10,12 @@ class Route
 
   # checks if pattern matches path and method matches request method
   def matches?(req)
-    # debugger
     path_test = @pattern =~ req.path
-    method_test = req.request_method.downcase.to_sym == @http_method
-    # debugger
+    method_used = req.request_method.downcase.to_sym
+    if(!req.params['_method'].nil?)
+      method_used = req.params['_method'].downcase.to_sym
+    end
+    method_test = method_used == @http_method
     return true if path_test!= nil && method_test
     false
   end

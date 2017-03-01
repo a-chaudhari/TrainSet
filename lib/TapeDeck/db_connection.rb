@@ -18,18 +18,18 @@ class DBConnection
     @db
   end
 
-  def self.reset
+  def self.reload(reset=false)
     commands = [
       "rm '#{CATS_DB_FILE}'",
       "cat '#{CATS_SQL_FILE}' | sqlite3 '#{CATS_DB_FILE}'"
     ]
 
-    commands.each { |command| `#{command}` }
+    commands.each { |command| `#{command}` } if reset
     DBConnection.open(CATS_DB_FILE)
   end
 
   def self.instance
-    reset if @db.nil?
+    reload if @db.nil?
 
     @db
   end

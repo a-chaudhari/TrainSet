@@ -93,6 +93,15 @@ class TapeDeck
     end
   end
 
+  def update_attributes(params = {})
+    cols = self.class.columns
+    params.each do |key, val|
+      raise "unknown attribute \'#{key}\'" unless cols.include?(key.to_sym)
+
+      send(key.to_s+"=",val)
+    end
+  end
+
   def attributes
     @attributes ||= {}
   end

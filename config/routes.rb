@@ -7,6 +7,9 @@ def init_router(router)
     post rgen('/cats'), CatsController, :create
 
     get Regexp.new("^/houses$"), HousesController, :index
+    get rgen('/houses/(?<id>\\d+)/edit'), HousesController, :edit
+    put rgen('/houses/(?<id>\\d+)'), HousesController, :update
+    get rgen('/houses/(?<id>\\d+)'), HousesController, :show
     get Regexp.new("^/houses/new$"), HousesController, :new
     post Regexp.new("^/houses$"), HousesController, :create
 

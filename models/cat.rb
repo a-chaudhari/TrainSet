@@ -6,6 +6,8 @@ class Cat < TapeDeck
   belongs_to :human,
     foreign_key: :owner_id
 
+   has_one_through :home, :human, :house
+
 
   def valid?
     unless name.length > 0

@@ -10,7 +10,8 @@ class AssocOptions
   attr_accessor(
     :foreign_key,
     :class_name,
-    :primary_key
+    :primary_key,
+    :name
   )
 
   def model_class
@@ -48,13 +49,13 @@ module Associatable
   # Phase IIIb
   def belongs_to(name, options = {})
 
-    options = BelongsToOptions.new(name, options)
-    assoc_options[name] = options
+    bt_options = BelongsToOptions.new(name, options)
+    self.assoc_options[name] = bt_options
     define_method(name) do
-      fk = send(options.foreign_key)
-      tmc = options.model_class
+      fk = send(bt_options.foreign_key)
+      tmc = bt_options.model_class
       # debugger
-      res = tmc.where(options.primary_key => fk).first
+      res = tmc.where(bt_options.primary_key => fk).first
     end
 
   end
@@ -63,6 +64,7 @@ module Associatable
     # debugger
     hm_options = HasManyOptions.new(name, self.to_s, options)
     # debugger
+    self.assoc_options[name] = hm_options
     define_method(name) do
       tmc = hm_options.model_class
       # debugger
@@ -77,6 +79,7 @@ module Associatable
   def assoc_options
     # Wait to implement this in Phase IVa. Modify `belongs_to`, too.
     @assoc_options ||= {}
+    @assoc_options
   end
 
   def has_one_through(name, through_name, source_name)
@@ -85,17 +88,17 @@ module Associatable
       through_options = self.class.assoc_options[through_name]
       source_options = through_options.model_class.assoc_options[source_name]
 
-
-
       select_line = source_options.class_name.underscore.pluralize
-      from_line = through_options.class_name.underscore + "s"
+      from_line = through_options.class_name.underscore.pluralize
       join_line = select_line
       # debugger
-      on_line = join_line + "." + source_options.primary_key.to_s + " = " + through_options.class_name.to_s.underscore + "s." + source_options.foreign_key.to_s
-      where_line = through_options.class_name.to_s.underscore + "s.id =" + self.id.to_s
+      on_line = (join_line + "." + source_options.primary_key.to_s +
+                  " = " + through_options.class_name.to_s.underscore.pluralize +
+                  "." + source_options.foreign_key.to_s)
 
+      where_line = (through_options.class_name.to_s.underscore.pluralize +
+                    "." + through_options.primary_key.to_s + "=" + self.send(through_options.foreign_key).to_s)
       # debugger
-
       res = DBConnection.execute(<<-SQL)
         SELECT
           #{select_line}.*
@@ -108,7 +111,44 @@ module Associatable
         WHERE
           #{where_line}
       SQL
+      # debugger
       source_options.model_class.new(res.first)
+    end
+  end
+  def has_many_through(name, through_name, source_name)
+    define_method(name) do
+      through_options = self.class.assoc_options[through_name]
+
+      source_options = through_options.model_class.assoc_options[source_name]
+
+      select_line = source_options.class_name.underscore.pluralize
+
+      from_line = through_options.class_name.underscore.pluralize
+
+      join_line = select_line
+
+      on_line = (source_options.class_name.to_s.underscore.pluralize +
+                  "." + source_options.foreign_key.to_s +
+                  " = " + through_options.class_name.underscore.pluralize +
+                  "." + through_options.primary_key.to_s)
+
+      where_line = through_options.foreign_key.to_s + " = " + self.id.to_s
+      res = DBConnection.execute(<<-SQL)
+        SELECT
+          #{select_line}.*
+        FROM
+          #{from_line}
+        JOIN
+          #{join_line}
+        ON
+          #{on_line}
+        WHERE
+          #{where_line}
+      SQL
+
+      res.map do |r|
+        source_options.model_class.new(r)
+      end
     end
   end
 
