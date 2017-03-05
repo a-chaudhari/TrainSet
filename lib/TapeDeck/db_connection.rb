@@ -19,12 +19,20 @@ class DBConnection
   end
 
   def self.reload(reset=false)
-    commands = [
-      "rm '#{CATS_DB_FILE}'",
-      "cat '#{CATS_SQL_FILE}' | sqlite3 '#{CATS_DB_FILE}'"
-    ]
+    commands = []
+    
+    if reset
+      commands.push("rm '#{CATS_DB_FILE}'")
+    end
 
-    commands.each { |command| `#{command}` } if reset
+    unless Pathname.new(CATS_DB_FILE).exist?
+      commands.push("cat '#{CATS_SQL_FILE}' | sqlite3 '#{CATS_DB_FILE}'")
+
+    end
+
+
+
+    commands.each { |command| `#{command}` }
     DBConnection.open(CATS_DB_FILE)
   end
 
