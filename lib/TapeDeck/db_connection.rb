@@ -1,4 +1,5 @@
 require 'sqlite3'
+require 'pathname'
 
 PRINT_QUERIES = ENV['PRINT_QUERIES'] == 'true'
 # https://tomafro.net/2010/01/tip-relative-paths-with-file-expand-path
@@ -20,7 +21,7 @@ class DBConnection
 
   def self.reload(reset=false)
     commands = []
-    
+
     if reset
       commands.push("rm '#{CATS_DB_FILE}'")
     end
