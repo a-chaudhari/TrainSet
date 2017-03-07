@@ -1,7 +1,0 @@
-<h1>Create new house form</h1>
-
-<form action="/houses" method="post">
-  <input type="text" name="house[address]" value="">
-  <div><%= flash['errors']['address'] unless flash[:errors].nil? %></div>
-  <input type="submit" name="" value="Add house">
-</form>

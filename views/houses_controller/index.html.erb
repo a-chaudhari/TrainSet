@@ -1,8 +1,0 @@
-<h1>All Houses in DB</h1>
-<ul>
-  <% @houses.each do |house| %>
-  <li><a href="/houses/<%= house.id %>"><%=house.address %></a></li>
-  <% end %>
-</ul>
-<a href="/houses/new">Add New House</a>
-<a href="/">Index</a>

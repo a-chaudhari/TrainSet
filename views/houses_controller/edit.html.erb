@@ -1,9 +1,0 @@
-<h1>edit house</h1>
-<form class="" action="/houses/<%=@house.id %>" method="post">
-  <input type="hidden" name="_method" value="put">
-  <label>Address
-  <input type="text" name="house[address]" value="<%= @house.address %>">
-  <div><%= flash['errors']['address'] unless flash[:errors].nil? %></div>
-</label>
-  <input type="submit" name="" value="update">
-</form>
