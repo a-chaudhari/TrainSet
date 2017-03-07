@@ -1,6 +1,4 @@
 require_relative 'db_connection'
-# require_relative 'sql_object'
-require "byebug"
 
 module Searchable
   def where(params)
@@ -29,8 +27,7 @@ module Searchable
     end
   end
 end
-
-class SQLObject
-  extend Searchable
-  # Mixin Searchable here...
-end
+# 
+# class SQLObject
+#   extend Searchable
+# end

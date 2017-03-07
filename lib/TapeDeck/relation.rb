@@ -14,10 +14,7 @@ class Relation
     #oh noez. it wants data off of a relationship.
     #fire the query
     return self.where_append(*args) if name.to_s == "where"
-    # debugger
     super unless ["each","map"].include?(name.to_s)
-    # output = where_items.join(" AND ")
-
 
     vars = []
     where_line = ""
@@ -29,7 +26,6 @@ class Relation
     end
 
     where_line = temp_arr.join(" AND ")
-    debugger
     res = DBConnection.execute(<<-SQL, *vars)
       SELECT
         #{@select}
@@ -49,10 +45,7 @@ class Relation
   end
 
   def where_append(hash, *args)
-    #append a where
-
       @where_hash.merge!(hash)
-
   end
 
 end

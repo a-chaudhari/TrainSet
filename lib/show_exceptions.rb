@@ -1,5 +1,4 @@
 require 'erb'
-require 'byebug'
 
 
 class ShowExceptions
@@ -24,11 +23,8 @@ class ShowExceptions
   private
 
   def render_exception(e)
-    # debugger
     data = File.read('lib/templates/rescue.html.erb')
     erb = ERB.new(data).result(binding)
-    #dump html output to file for testing purposes
-    # File.open('test.html', 'w'){ |file| file.write(erb)}
     ['500', {'Content-type' => 'text/html'}, erb]
   end
 

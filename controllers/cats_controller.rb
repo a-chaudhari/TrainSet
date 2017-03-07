@@ -1,10 +1,7 @@
 class CatsController < ControllerBase
 
   def show
-    # session["count"] ||= 0
-    # session["count"] += 1
     @cat = Cat.find(Integer(params['cat_id']))
-    # debugger
     render :show
   end
 

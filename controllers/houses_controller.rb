@@ -10,7 +10,6 @@ class HousesController < ControllerBase
   end
 
   def create
-    # debugger
     house = House.new(address: params['house']['address'])
     if house.save
       redirect_to '/houses'
@@ -26,7 +25,6 @@ class HousesController < ControllerBase
   end
 
   def update
-    # debugger
     @house = House.find(Integer(params['id']))
     @house.update_attributes(params['house'])
     if @house.save

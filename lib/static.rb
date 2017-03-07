@@ -1,4 +1,3 @@
-# require 'byebug'
 class Static
   attr_reader :req
 

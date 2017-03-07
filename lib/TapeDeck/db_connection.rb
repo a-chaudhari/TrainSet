@@ -7,11 +7,8 @@ ROOT_FOLDER = File.join(File.dirname(__FILE__), '../..')
 CATS_SQL_FILE = File.join(ROOT_FOLDER, 'cats.sql')
 CATS_DB_FILE = File.join(ROOT_FOLDER, 'cats.db')
 
-# debugger
-
 class DBConnection
   def self.open(db_file_name)
-    # debugger
     @db = SQLite3::Database.new(db_file_name)
     @db.results_as_hash = true
     @db.type_translation = true
@@ -28,10 +25,7 @@ class DBConnection
 
     unless Pathname.new(CATS_DB_FILE).exist?
       commands.push("cat '#{CATS_SQL_FILE}' | sqlite3 '#{CATS_DB_FILE}'")
-
     end
-
-
 
     commands.each { |command| `#{command}` }
     DBConnection.open(CATS_DB_FILE)
@@ -49,7 +43,6 @@ class DBConnection
   end
 
   def self.execute2(*args)
-    # debugger
     print_query(*args)
     instance.execute2(*args)
   end
